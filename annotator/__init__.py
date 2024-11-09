@@ -47,13 +47,13 @@ else:
 # `declare_component` and call it done. The wrapper allows us to customize
 # our component's API: we can pre-process its input args, post-process its
 # output value, and add a docstring for users.
-def annotator(doc, key=None):
+def annotator(args, key=None):
     """Create a new instance of "annotator".
 
     Parameters
     ----------
-    doc: str
-        The PDF document encoded as base64.
+    args: JSON
+        Contains all args (user_id, doc_id, supabase_url and supabase_key)
     key: str or None
         An optional key that uniquely identifies this component. If this is
         None, and the component's arguments are changed, the component will
@@ -67,13 +67,14 @@ def annotator(doc, key=None):
         frontend.)
 
     """
+    
     # Call through to our private component function. Arguments we pass here
     # will be sent to the frontend, where they'll be available in an "args"
     # dictionary.
     #
     # "default" is a special argument that specifies the initial return
     # value of the component before the user has interacted with it.
-    component_value = _component_func(doc=doc, key=key, default=0)
+    component_value = _component_func(args=args, key=key, default=0)
 
     # We could modify the value returned from the component if we wanted.
     # There's no need to do this in our simple example - but it's an option.

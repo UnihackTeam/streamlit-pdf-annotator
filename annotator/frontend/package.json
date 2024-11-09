@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",
     "streamlit-component-lib": "^2.0.0",
     "vue": "^3.3.11"
   },

@@ -7,13 +7,16 @@ from annotator import annotator
 
 st.subheader("PDF Annotator")
 
-# Upload the PDF
-uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
+user_id = 2
+doc_id = 1
+supabase_url = 'https://lndnrkmllszfkltxmqqw.supabase.co'
+supabase_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxuZG5ya21sbHN6ZmtsdHhtcXF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEwNjMzOTYsImV4cCI6MjA0NjYzOTM5Nn0.Z8PPI83b3uyhc19GskQgOMHVJmuS7DHZ3EexFE8LFzY'
 
-if uploaded_file:
-    binary = uploaded_file.getvalue()
+args = {
+    'user_id': user_id,
+    'doc_id': doc_id,
+    'supabase_url': supabase_url,
+    'supabase_key': supabase_key
+}
 
-    # Encode the binary data as a base64 string and render the PDF
-    base64_pdf = base64.b64encode(binary).decode("utf-8")
-
-    num_clicks = annotator(base64_pdf)
+num_clicks = annotator(args)
