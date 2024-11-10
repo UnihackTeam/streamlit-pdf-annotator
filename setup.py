@@ -6,11 +6,11 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
-    name="streamlit-custom-component",
+    name="streamlit-pdf-annotator",
     version="0.0.1",
-    author="John Smith",
-    author_email="john@example.com",
-    description="Streamlit component that allows you to do X",
+    author="UnihackErasmusTeam",
+    author_email="4ndr3s@duck.com",
+    description="Streamlit component that allows you to annotate PDFs",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="",

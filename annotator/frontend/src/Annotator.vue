@@ -54,10 +54,19 @@
         </div>
         <div v-show="question.isOpen" class="popup">
           <div>
-            <input type="text" placeholder="Here goes your question" v-model="question.question">
-            <button class="button" style="background-color: #FF4500; color: white; margin-left: 10px;" @click="removeQuestion(question.id)">Remove</button>
+            <input v-if="!user.is_teacher" type="text" placeholder="Here goes your question" v-model="question.question">
+            <p v-if="user.is_teacher" style="margin: 0;">{{ question.question }}</p>
+            <button
+              v-if="!user.is_teacher"
+              class="button" 
+              style="background-color: #FF4500; color: white; margin-left: 10px;" @click="removeQuestion(question.id)"
+            >
+              Remove
+            </button>
           </div>
-          <button class="button blue" style="margin-top: 10px;" @click="askQuestion(question.id, question.question); question.isOpen = false">Ask question</button>
+          <input v-if="user.is_teacher" type="text" placeholder="Here goes your reply" v-model="question.answer">
+          <button v-if="!user.is_teacher" class="button blue" style="margin-top: 10px;" @click="askQuestion(question.id, question.question); question.isOpen = false">Ask question</button>
+          <button v-if="user.is_teacher" class="button blue" style="margin-top: 10px; margin-left: 10px;" @click="question.isOpen = false">Reply</button>
         </div>
       </div>
     </div>
@@ -81,6 +90,7 @@ export default {
     const questions = ref([]);
     const inputNumberRef = ref(null);
     const canvasRect = ref({left:0, top:0});
+    const user = ref();
     let pdfDoc = null;
 
     // Create a single supabase client for interacting with your database
@@ -99,11 +109,27 @@ export default {
       
       supabase = createClient(supabaseUrl, supabaseKey);
 
+      // Get user
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select()
+        .eq('id', userId);
+      if (userError == null) {
+        user.value = userData[0];
+        console.log('User data');
+        console.log(user.value);
+        setTimeout(() => {
+          user.value.is_teacher = true
+          console.log('NOw is teacher');
+          console.log(user.value);
+        }, 30000);
+      }
+
       // Get document
       const { data: docData, error: docError } = await supabase
         .from('docs')
         .select()
-        .eq('id', docId)
+        .eq('id', docId);
       
       const document = docData[0];
       const documentPath = document.file_path;
@@ -246,6 +272,7 @@ export default {
       questions,
       canvasRect,
       inputNumberRef,
+      user,
       goTo,
       //handleInput,
       createQuestion,
